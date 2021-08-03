@@ -53,7 +53,7 @@ import java.nio.ByteBuffer;
 import org.tensorflow.lite.examples.detection.env.ImageUtils;
 import org.tensorflow.lite.examples.detection.env.Logger;
 
-public abstract class CameraActivity extends AppCompatActivity
+public abstract class CameraActivity<result> extends AppCompatActivity
     implements OnImageAvailableListener,
         Camera.PreviewCallback,
         CompoundButton.OnCheckedChangeListener,
@@ -404,7 +404,7 @@ public abstract class CameraActivity extends AppCompatActivity
         // We don't use a front facing camera in this sample.
         final Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
         //facing = CameraCharacteristics.LENS_FACING_FRONT;
-        if (facing != null && facing == CameraCharacteristics.LENS_FACING_BACK) {
+        if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
           continue;
         }
 

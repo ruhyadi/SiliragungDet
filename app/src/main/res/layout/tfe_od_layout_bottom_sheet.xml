@@ -30,12 +30,13 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
+        android:id="@+id/status_masker"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18pt"
         android:textStyle="bold"
-        android:text="Bermasker" />
+        android:gravity="center"
+        android:text="Tidak Terdeteksi"/>
 
     <LinearLayout
         android:layout_width="match_parent"

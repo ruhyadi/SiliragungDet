@@ -29,6 +29,7 @@ import android.media.ImageReader.OnImageAvailableListener;
 import android.os.SystemClock;
 import android.util.Size;
 import android.util.TypedValue;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,14 +47,14 @@ import org.tensorflow.lite.examples.detection.tracking.MultiBoxTracker;
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track
  * objects.
  */
-public class DetectorActivity extends CameraActivity implements OnImageAvailableListener {
+public class DetectorActivity<ResultTracker> extends CameraActivity implements OnImageAvailableListener {
   private static final Logger LOGGER = new Logger();
 
   // Configuration values for the prepackaged SSD model.
   private static final int TF_OD_API_INPUT_SIZE = 320;
   private static final boolean TF_OD_API_IS_QUANTIZED = true;
   private static final String TF_OD_API_MODEL_FILE = "detect.tflite";
-  private static final String TF_OD_API_LABELS_FILE = "labelmap.txt";
+  private static final String TF_OD_API_LABELS_FILE = "label_map.txt";
   private static final DetectorMode MODE = DetectorMode.TF_OD_API;
   // Minimum detection confidence to track a detection.
   private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.5f;
@@ -82,6 +83,12 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private MultiBoxTracker tracker;
 
   private BorderedText borderedText;
+
+  //tambahan
+  private TextView statusMasker;
+
+  String textStatusMask;
+
 
   @Override
   public void onPreviewSizeChosen(final Size size, final int rotation) {
@@ -133,6 +140,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     cropToFrameTransform = new Matrix();
     frameToCropTransform.invert(cropToFrameTransform);
 
+    //tambahan
+    statusMasker = findViewById(R.id.status_masker);
+
     trackingOverlay = (OverlayView) findViewById(R.id.tracking_overlay);
     trackingOverlay.addCallback(
         new DrawCallback() {
@@ -146,6 +156,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         });
 
     tracker.setFrameConfiguration(previewWidth, previewHeight, sensorOrientation);
+
   }
 
   @Override
@@ -185,7 +196,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
             final Canvas canvas = new Canvas(cropCopyBitmap);
             final Paint paint = new Paint();
-            paint.setColor(Color.RED);
+            paint.setColor(Color.GREEN);
             paint.setStyle(Style.STROKE);
             paint.setStrokeWidth(2.0f);
 
@@ -202,9 +213,17 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             for (final Detector.Recognition result : results) {
               final RectF location = result.getLocation();
               if (location != null && result.getConfidence() >= minimumConfidence) {
-                //canvas.drawRect(location, paint);
+                canvas.drawRect(location, paint);
 
                 cropToFrameTransform.mapRect(location);
+
+                //tambahan
+//                if (result.getTitle() == "with_mask") {
+//                  textStatusMask = "Bermasker";
+//                } else if (result.getTitle() == "without_mask") {
+//                  textStatusMask = "Tidak Bermasker";
+//                }
+                statusMasker.setText(result.getTitle());
 
                 result.setLocation(location);
                 mappedRecognitions.add(result);

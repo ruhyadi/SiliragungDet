@@ -25,6 +25,7 @@ import java.util.List;
 import org.tensorflow.lite.examples.detection.tflite.Detector.Recognition;
 
 public class RecognitionScoreView extends View implements ResultsView {
+  String drawText;
   private static final float TEXT_SIZE_DIP = 14;
   private final float textSizePx;
   private final Paint fgPaint;
@@ -57,9 +58,18 @@ public class RecognitionScoreView extends View implements ResultsView {
 
     canvas.drawPaint(bgPaint);
 
+    // draw text
     if (results != null) {
       for (final Recognition recog : results) {
-        canvas.drawText(recog.getTitle() + ": " + recog.getConfidence(), x, y, fgPaint);
+        if (recog.getTitle() == "with_mask") {
+          drawText = "Bermasker";
+        } else if (recog.getTitle() == "without_mask") {
+          drawText = "Tidak Bermasker";
+        } else {
+          drawText = "Pemakaian Masker Salah";
+        }
+        canvas.drawText(drawText + ": Bermasker" + recog.getConfidence(), x, y, fgPaint);
+        //canvas.drawText(recog.getTitle() + ": " + recog.getConfidence(), x, y, fgPaint);
         y += (int) (fgPaint.getTextSize() * 1.5f);
       }
     }

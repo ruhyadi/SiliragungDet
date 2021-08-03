@@ -60,7 +60,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private static final boolean MAINTAIN_ASPECT = false;
   private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
   private static final boolean SAVE_PREVIEW_BITMAP = false;
-  private static final float TEXT_SIZE_DIP = 10;
+  private static final float TEXT_SIZE_DIP = 5;
   OverlayView trackingOverlay;
   private Integer sensorOrientation;
 
@@ -198,11 +198,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
             final List<Detector.Recognition> mappedRecognitions =
                 new ArrayList<Detector.Recognition>();
-
+            // draw rectangle
             for (final Detector.Recognition result : results) {
               final RectF location = result.getLocation();
               if (location != null && result.getConfidence() >= minimumConfidence) {
-                canvas.drawRect(location, paint);
+                //canvas.drawRect(location, paint);
 
                 cropToFrameTransform.mapRect(location);
 

@@ -31,6 +31,9 @@ public class BorderedText {
 
   private final float textSize;
 
+  //tambahan
+  String newText;
+
   /**
    * Creates a left-aligned bordered text object with a white interior, and a black exterior with
    * the specified text size.
@@ -81,14 +84,24 @@ public class BorderedText {
   public void drawText(
       final Canvas canvas, final float posX, final float posY, final String text, Paint bgPaint) {
 
-    float width = exteriorPaint.measureText(text);
+    // tambahan
+    if (text.contains("with_mask")) {
+      newText = "Bermasker";
+    } else if (text.contains("without_mask")) {
+      newText = "Tidak Bermasker";
+    } else {
+      newText = "Pemakaian Salah";
+    }
+
+    float width = exteriorPaint.measureText(newText);
     float textSize = exteriorPaint.getTextSize();
     Paint paint = new Paint(bgPaint);
     paint.setStyle(Paint.Style.FILL);
     paint.setAlpha(160);
-    // uncoment kedua baris untuk menggambarkankan text pada video
+
+    // uncomment kedua baris untuk menggambarkankan text pada video
     canvas.drawRect(posX, (posY + (int) (textSize)), (posX + (int) (width)), posY, paint);
-    canvas.drawText(text, posX, (posY + textSize), interiorPaint);
+    canvas.drawText(newText, posX, (posY + textSize), interiorPaint);
   }
 
   public void drawLines(Canvas canvas, final float posX, final float posY, Vector<String> lines) {

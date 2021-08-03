@@ -218,12 +218,14 @@ public class DetectorActivity<ResultTracker> extends CameraActivity implements O
                 cropToFrameTransform.mapRect(location);
 
                 //tambahan
-//                if (result.getTitle() == "with_mask") {
-//                  textStatusMask = "Bermasker";
-//                } else if (result.getTitle() == "without_mask") {
-//                  textStatusMask = "Tidak Bermasker";
-//                }
-                statusMasker.setText(result.getTitle());
+                if (result.getTitle().equals("with_mask")) {
+                  textStatusMask = "Bermasker";
+                } else if (result.getTitle().equals("without_mask")) {
+                  textStatusMask = "Tidak Bermasker";
+                } else {
+                  textStatusMask = "Pemakaian Salah";
+                }
+                statusMasker.setText(textStatusMask);
 
                 result.setLocation(location);
                 mappedRecognitions.add(result);
